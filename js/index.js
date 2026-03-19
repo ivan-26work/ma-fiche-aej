@@ -1,5 +1,5 @@
 // ===== index.js - Site Stagiaire =====
-// Version avec vérification filière + enregistrement filière dans téléchargements
+// Version FINALE avec messages dynamiques (6s/8s) + matricule auto
 
 (function() {
   const SUPABASE_URL = 'https://lnwrwvwunwsqeuluupis.supabase.co';
@@ -15,6 +15,8 @@
   let currentFileCategorie = null;
   let searchTimeout = null;
   let etape = 1;
+  let messageTimeout = null;
+  let messageInterval = null;
 
   // Données temporaires pour l'overlay
   let tempData = {
@@ -24,8 +26,11 @@
     telephone: ''
   };
 
+  // Messages par défaut
+  const DEFAULT_MESSAGE = 'Saisissez votre matricule pour accéder à votre fiche';
+
   // ---------------------------------------------
-  // ÉLÉMENTS DOM PRINCIPAUX
+  // ÉLÉMENTS DOM
   // ---------------------------------------------
   const loadingOverlay = document.getElementById('loadingOverlay');
   const infoOverlay = document.getElementById('infoOverlay');
@@ -41,7 +46,7 @@
   const shareBtn = document.getElementById('shareBtn');
   const cancelBtn = document.getElementById('cancelBtn');
 
-  // Éléments des cases matricule (header)
+  // Cases matricule header
   const cases = [
     document.getElementById('case1'),
     document.getElementById('case2'),
@@ -87,29 +92,88 @@
   const confirmTelephone = document.getElementById('confirmTelephone');
 
   // ---------------------------------------------
+  // GESTION MESSAGES DYNAMIQUES
+  // ---------------------------------------------
+  function clearMessageTimers() {
+    if (messageTimeout) clearTimeout(messageTimeout);
+    if (messageInterval) clearInterval(messageInterval);
+    messageTimeout = null;
+    messageInterval = null;
+  }
+
+  function setAutoMessage(messages, index = 0) {
+    if (!messages || messages.length === 0) return;
+    
+    clearMessageTimers();
+    
+    const showMessage = (idx) => {
+      if (idx >= messages.length) {
+        // Retour au message par défaut
+        updateInfoMessage(DEFAULT_MESSAGE, 'info');
+        return;
+      }
+      
+      const msg = messages[idx];
+      updateInfoMessage(msg.text, msg.type);
+      
+      // Programmer le suivant
+      messageTimeout = setTimeout(() => {
+        showMessage(idx + 1);
+      }, msg.duration || 6000);
+    };
+    
+    showMessage(0);
+  }
+
+  function updateInfoMessage(msg, type = 'info', isError = false) {
+    const span = infoMessage?.querySelector('span');
+    const icon = infoMessage?.querySelector('i');
+    if (!span) return;
+    
+    span.textContent = msg;
+    infoMessage.className = 'info-message';
+    
+    if (type === 'error' || isError) {
+      infoMessage.classList.add('error');
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    } else if (type === 'success') {
+      infoMessage.classList.add('success');
+    } else {
+      infoMessage.classList.add('info');
+    }
+  }
+
+  // ---------------------------------------------
   // INITIALISATION
   // ---------------------------------------------
   async function init() {
     try {
       await initSupabase();
-      const connecte = await checkUser();
       
+      const connecte = await checkUser();
       if (!connecte) {
         window.location.href = 'auth.html';
         return;
       }
       
-      await checkUserData();
+      // Message de chargement
+      setAutoMessage([
+        { text: 'Chargement de votre profil...', type: 'info', duration: 2000 }
+      ]);
+      
+      await loadUserData();
       setupMatriculeCases();
       setupOverlayCases();
       setupEventListeners();
-      loadLastMatricule();
       
     } catch (error) {
       console.error('Erreur initialisation:', error);
-      updateInfoMessage('Erreur de chargement', 'error');
+      setAutoMessage([
+        { text: 'Erreur de chargement', type: 'error', duration: 8000 },
+        { text: DEFAULT_MESSAGE, type: 'info' }
+      ]);
     } finally {
-      setTimeout(() => loadingOverlay?.classList.add('hidden'), 500);
+      setTimeout(() => loadingOverlay?.classList.add('hidden'), 700);
     }
   }
 
@@ -144,9 +208,9 @@
   }
 
   // ---------------------------------------------
-  // VÉRIFICATION DONNÉES UTILISATEUR
+  // CHARGEMENT DONNÉES UTILISATEUR
   // ---------------------------------------------
-  async function checkUserData() {
+  async function loadUserData() {
     try {
       const { data, error } = await supabase
         .from('securite')
@@ -168,12 +232,20 @@
       currentSecurite = data;
       enableMatriculeCases();
       
-      // Vérifier si la filière est renseignée
+      // Charger automatiquement le matricule dans les cases
+      loadUserMatricule();
+      
       if (!data.filiere) {
-        updateInfoMessage('Veuillez renseigner votre filière dans Profil', 'info');
-        // Désactiver le bouton téléchargement (sera géré dans download)
+        setAutoMessage([
+          { text: `Bienvenue ${data.prenom} ${data.nom}`, type: 'success', duration: 4000 },
+          { text: 'Renseignez votre filière dans Profil', type: 'info', duration: 6000 },
+          { text: DEFAULT_MESSAGE, type: 'info' }
+        ]);
       } else {
-        updateInfoMessage(`Bienvenue ${data.prenom} ${data.nom}`, 'success');
+        setAutoMessage([
+          { text: `Bienvenue ${data.prenom} ${data.nom}`, type: 'success', duration: 4000 },
+          { text: DEFAULT_MESSAGE, type: 'info' }
+        ]);
       }
       
     } catch (error) {
@@ -183,7 +255,26 @@
   }
 
   // ---------------------------------------------
-  // GESTION OVERLAY 3 ÉTAPES
+  // CHARGEMENT AUTOMATIQUE DU MATRICULE
+  // ---------------------------------------------
+  function loadUserMatricule() {
+    if (!currentSecurite || !cases[0]) return;
+    
+    const matricule = currentSecurite.matricule;
+    const parts = matricule.split(' ');
+    if (parts.length !== 2) return;
+    
+    const chiffres = parts[0];
+    const lettre = parts[1];
+    
+    for (let i = 0; i < 8; i++) {
+      if (cases[i] && chiffres[i]) cases[i].value = chiffres[i];
+    }
+    if (cases[8] && lettre) cases[8].value = lettre;
+  }
+
+  // ---------------------------------------------
+  // OVERLAY 3 ÉTAPES
   // ---------------------------------------------
   function showInfoOverlay() {
     disableMatriculeCases();
@@ -225,13 +316,10 @@
 
   function loadTempDataToStep2() {
     if (!tempData.matricule) return;
-    
     const parts = tempData.matricule.split(' ');
     if (parts.length !== 2) return;
-    
     const chiffres = parts[0];
     const lettre = parts[1];
-    
     for (let i = 0; i < 8; i++) {
       if (stepCases[i] && chiffres[i]) stepCases[i].value = chiffres[i];
     }
@@ -248,12 +336,18 @@
 
   function validateStep1() {
     if (!stepNom?.value.trim()) {
-      updateInfoMessage('Nom requis', 'error', true);
+      setAutoMessage([
+        { text: 'Nom requis', type: 'error', duration: 8000 },
+        { text: 'Veuillez entrer votre nom', type: 'info' }
+      ]);
       stepNom?.focus();
       return false;
     }
     if (!stepPrenom?.value.trim()) {
-      updateInfoMessage('Prénom requis', 'error', true);
+      setAutoMessage([
+        { text: 'Prénom requis', type: 'error', duration: 8000 },
+        { text: 'Veuillez entrer votre prénom', type: 'info' }
+      ]);
       stepPrenom?.focus();
       return false;
     }
@@ -263,36 +357,38 @@
   function validateStep2() {
     for (let i = 0; i < 8; i++) {
       if (!stepCases[i]?.value) {
-        updateInfoMessage('Matricule incomplet', 'error', true);
+        setAutoMessage([
+          { text: 'Matricule incomplet', type: 'error', duration: 8000 },
+          { text: 'Remplissez les 8 chiffres', type: 'info' }
+        ]);
         return false;
       }
     }
     if (!stepCases[8]?.value) {
-      updateInfoMessage('Lettre du matricule manquante', 'error', true);
+      setAutoMessage([
+        { text: 'Lettre du matricule manquante', type: 'error', duration: 8000 },
+        { text: 'Ajoutez la lettre (A-Z)', type: 'info' }
+      ]);
       return false;
     }
-
     const tel = stepTelephone?.value.replace(/\D/g, '');
     if (!tel || tel.length !== 10) {
-      updateInfoMessage('Téléphone doit contenir 10 chiffres', 'error', true);
+      setAutoMessage([
+        { text: 'Téléphone doit contenir 10 chiffres', type: 'error', duration: 8000 },
+        { text: 'Exemple: 0123456789', type: 'info' }
+      ]);
       return false;
     }
-
     return true;
   }
 
   function getMatriculeFromOverlay() {
     let chiffres = '';
-    for (let i = 0; i < 8; i++) {
-      chiffres += stepCases[i]?.value || '';
-    }
+    for (let i = 0; i < 8; i++) chiffres += stepCases[i]?.value || '';
     const lettre = stepCases[8]?.value || '';
     return chiffres + ' ' + lettre;
   }
 
-  // ---------------------------------------------
-  // SAUVEGARDE DANS SECURITE
-  // ---------------------------------------------
   async function saveToSecurite() {
     try {
       const { error } = await supabase
@@ -303,7 +399,6 @@
           prenom: tempData.prenom,
           matricule: tempData.matricule,
           telephone: tempData.telephone
-          // filière sera renseignée plus tard dans profil
         });
 
       if (error) throw error;
@@ -319,18 +414,27 @@
 
       hideInfoOverlay();
       enableMatriculeCases();
-      updateInfoMessage('Informations enregistrées. Renseignez votre filière dans Profil', 'info');
       
-      localStorage.setItem('lastMatricule', tempData.matricule);
+      // Charger le matricule automatiquement
+      loadUserMatricule();
+      
+      setAutoMessage([
+        { text: 'Informations enregistrées', type: 'success', duration: 4000 },
+        { text: 'Renseignez votre filière dans Profil', type: 'info', duration: 6000 },
+        { text: DEFAULT_MESSAGE, type: 'info' }
+      ]);
       
     } catch (error) {
       console.error('Erreur sauvegarde:', error);
-      updateInfoMessage('Erreur lors de la sauvegarde', 'error', true);
+      setAutoMessage([
+        { text: 'Erreur lors de la sauvegarde', type: 'error', duration: 8000 },
+        { text: 'Réessayez ou contactez l\'assistance', type: 'info' }
+      ]);
     }
   }
 
   // ---------------------------------------------
-  // GESTION CASES MATRICULE (HEADER)
+  // GESTION CASES HEADER
   // ---------------------------------------------
   function disableMatriculeCases() {
     cases.forEach(c => { if (c) c.disabled = true; });
@@ -346,13 +450,8 @@
       
       input.addEventListener('input', (e) => {
         let value = e.target.value.toUpperCase();
-        
-        if (index < 8) {
-          value = value.replace(/[^0-9]/g, '');
-        } else {
-          value = value.replace(/[^A-Z]/g, '');
-        }
-        
+        if (index < 8) value = value.replace(/[^0-9]/g, '');
+        else value = value.replace(/[^A-Z]/g, '');
         e.target.value = value;
         
         if (value.length === 1 && index < 8) {
@@ -395,23 +494,6 @@
 
   function clearHeaderCases() {
     cases.forEach(c => { if (c) c.value = ''; });
-    cases[0]?.focus();
-  }
-
-  function loadLastMatricule() {
-    const saved = localStorage.getItem('lastMatricule');
-    if (!saved || !currentSecurite) return;
-    
-    const parts = saved.split(' ');
-    if (parts.length !== 2) return;
-    
-    const chiffres = parts[0];
-    const lettre = parts[1];
-    
-    for (let i = 0; i < 8; i++) {
-      if (cases[i] && chiffres[i]) cases[i].value = chiffres[i];
-    }
-    if (cases[8] && lettre) cases[8].value = lettre;
   }
 
   // ---------------------------------------------
@@ -423,15 +505,9 @@
       
       input.addEventListener('input', (e) => {
         let value = e.target.value.toUpperCase();
-        
-        if (index < 8) {
-          value = value.replace(/[^0-9]/g, '');
-        } else {
-          value = value.replace(/[^A-Z]/g, '');
-        }
-        
+        if (index < 8) value = value.replace(/[^0-9]/g, '');
+        else value = value.replace(/[^A-Z]/g, '');
         e.target.value = value;
-        
         if (value.length === 1 && index < 8) {
           stepCases[index + 1]?.focus();
         }
@@ -450,29 +526,14 @@
   // ---------------------------------------------
   function startSearch() {
     miniLoader?.classList.remove('hidden');
-    updateInfoMessage('Recherche en cours...', 'info');
+    setAutoMessage([
+      { text: 'Recherche en cours...', type: 'info', duration: 2000 }
+    ]);
     searchFile();
   }
 
   function stopSearch() {
     miniLoader?.classList.add('hidden');
-  }
-
-  function updateInfoMessage(msg, type = 'info', isError = false) {
-    const span = infoMessage?.querySelector('span');
-    if (!span) return;
-    
-    span.textContent = msg;
-    infoMessage.className = 'info-message ' + type;
-    
-    if (type === 'error' || isError) {
-      infoMessage.classList.add('error');
-      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-    } else if (type === 'success') {
-      infoMessage.classList.add('success');
-    } else {
-      infoMessage.classList.add('info');
-    }
   }
 
   function resetInterface() {
@@ -496,7 +557,6 @@
     fileActions?.classList.remove('hidden');
     currentFile = { file, url };
     
-    // Extraire la catégorie du nom du fichier
     const nomSansExt = file.nom.replace(/\.pdf$/i, '');
     const parties = nomSansExt.split(' ');
     currentFileCategorie = parties.length >= 4 ? parties[3] : 'Fiche';
@@ -505,17 +565,36 @@
   async function searchFile() {
     if (!validateHeaderCases()) {
       stopSearch();
-      updateInfoMessage('Remplissez toutes les cases', 'error');
+      setAutoMessage([
+        { text: 'Veuillez remplir toutes les cases du matricule', type: 'error', duration: 8000 },
+        { text: DEFAULT_MESSAGE, type: 'info' }
+      ]);
       return;
     }
 
     const matriculeSaisi = getHeaderMatricule();
 
-    if (!currentSecurite || matriculeSaisi !== currentSecurite.matricule) {
+    if (!currentSecurite) {
       stopSearch();
-      updateInfoMessage('Vous ne pouvez consulter que votre propre fiche', 'error');
+      setAutoMessage([
+        { text: 'Profil non chargé - Rechargez la page', type: 'error', duration: 8000 },
+        { text: DEFAULT_MESSAGE, type: 'info' }
+      ]);
+      return;
+    }
+
+    const matSaisiNorm = matriculeSaisi.replace(/\s+/g, ' ').trim();
+    const matBaseNorm = currentSecurite.matricule.replace(/\s+/g, ' ').trim();
+
+    if (matSaisiNorm !== matBaseNorm) {
+      stopSearch();
+      setAutoMessage([
+        { text: 'Ce matricule ne correspond pas à votre compte', type: 'error', duration: 8000 },
+        { text: DEFAULT_MESSAGE, type: 'info' }
+      ]);
       resetInterface();
       clearHeaderCases();
+      loadUserMatricule(); // Remet le bon matricule
       return;
     }
 
@@ -523,11 +602,14 @@
       const { data: fichiers, error } = await supabase
         .from('fichiers')
         .select('*')
-        .filter('nom', 'ilike', `${matriculeSaisi}%`);
+        .filter('nom', 'ilike', `${matSaisiNorm}%`);
 
       if (error || !fichiers?.length) {
         stopSearch();
-        updateInfoMessage('Aucun fichier trouvé', 'error');
+        setAutoMessage([
+          { text: 'Aucun fichier trouvé pour ce matricule', type: 'error', duration: 8000 },
+          { text: 'Vérifiez auprès de l\'administration', type: 'info' }
+        ]);
         resetInterface();
         return;
       }
@@ -538,62 +620,70 @@
         .getPublicUrl(file.chemin_storage);
 
       showFile(file, urlData.publicUrl);
-      updateInfoMessage('Fichier trouvé', 'success');
-      localStorage.setItem('lastMatricule', matriculeSaisi);
+      setAutoMessage([
+        { text: 'Fichier trouvé', type: 'success', duration: 4000 },
+        { text: DEFAULT_MESSAGE, type: 'info' }
+      ]);
 
     } catch (error) {
       console.error(error);
       stopSearch();
-      updateInfoMessage('Erreur de recherche', 'error');
+      setAutoMessage([
+        { text: 'Erreur lors de la recherche', type: 'error', duration: 8000 },
+        { text: 'Réessayez plus tard', type: 'info' }
+      ]);
     }
   }
 
   // ---------------------------------------------
-  // TÉLÉCHARGEMENT AVEC VÉRIFICATION FILIÈRE
+  // TÉLÉCHARGEMENT
   // ---------------------------------------------
   async function downloadFile() {
     if (!currentFile) return;
     
-    // Vérifier si la filière est renseignée
-    if (!currentSecurite || !currentSecurite.filiere) {
-      updateInfoMessage('Veuillez d\'abord renseigner votre filière dans Profil', 'error', true);
+    if (!currentSecurite?.filiere) {
+      setAutoMessage([
+        { text: '⛔ Téléchargement bloqué : renseignez d\'abord votre filière dans Profil', type: 'error', duration: 8000 },
+        { text: 'Menu → Profil → Renseigner filière', type: 'info' }
+      ]);
       return;
     }
     
     try {
-      // Ouvrir le fichier
       window.open(currentFile.url, '_blank');
       
-      // Enregistrer le téléchargement avec la filière
-      if (currentUser) {
-        await supabase
-          .from('telechargements')
-          .insert({
-            user_id: currentUser.id,
-            date_telechargement: new Date().toISOString(),
-            categorie: currentFileCategorie || 'Fiche',
-            filiere: currentSecurite.filiere
-          })
-          .then(({ error }) => {
-            if (error) console.warn('Erreur enregistrement téléchargement:', error);
-          });
-      }
+      await supabase
+        .from('telechargements')
+        .insert({
+          user_id: currentUser.id,
+          date_telechargement: new Date().toISOString(),
+          categorie: currentFileCategorie || 'Fiche',
+          filiere: currentSecurite.filiere
+        })
+        .then(({ error }) => {
+          if (error) console.warn('Erreur enregistrement:', error);
+        });
       
-      updateInfoMessage('Téléchargement démarré', 'success');
+      setAutoMessage([
+        { text: 'Téléchargement démarré', type: 'success', duration: 4000 },
+        { text: DEFAULT_MESSAGE, type: 'info' }
+      ]);
       
     } catch (error) {
       console.error('Erreur téléchargement:', error);
-      updateInfoMessage('Erreur de téléchargement', 'error');
+      setAutoMessage([
+        { text: 'Erreur lors du téléchargement', type: 'error', duration: 8000 },
+        { text: 'Réessayez ou contactez l\'assistance', type: 'info' }
+      ]);
     }
   }
 
-  // ---------------------------------------------
-  // AUTRES ACTIONS
-  // ---------------------------------------------
   function openFileDirect() {
     if (!currentFile) return;
     window.open(currentFile.url, '_blank');
-    updateInfoMessage('Ouverture du fichier...', 'info');
+    setAutoMessage([
+      { text: 'Ouverture du fichier...', type: 'info', duration: 2000 }
+    ]);
   }
 
   function shareFile() {
@@ -601,7 +691,6 @@
     if (navigator.share) {
       navigator.share({
         title: 'Ma fiche AEJ',
-        text: 'Voici ma fiche d\'inscription',
         url: currentFile.url
       }).catch(() => copyToClipboard());
     } else {
@@ -612,16 +701,26 @@
   function copyToClipboard() {
     if (!currentFile) return;
     navigator.clipboard.writeText(currentFile.url).then(() => {
-      updateInfoMessage('Lien copié', 'success');
+      setAutoMessage([
+        { text: 'Lien copié dans le presse-papier', type: 'success', duration: 4000 },
+        { text: DEFAULT_MESSAGE, type: 'info' }
+      ]);
     }).catch(() => {
-      updateInfoMessage('Erreur de copie', 'error');
+      setAutoMessage([
+        { text: 'Impossible de copier le lien', type: 'error', duration: 8000 },
+        { text: 'Utilisez le bouton Partager', type: 'info' }
+      ]);
     });
   }
 
   function cancelFile() {
     clearHeaderCases();
+    loadUserMatricule(); // Remet le bon matricule
     resetInterface();
-    updateInfoMessage('Veuillez saisir votre matricule', 'info');
+    setAutoMessage([
+      { text: 'Saisie annulée', type: 'info', duration: 3000 },
+      { text: DEFAULT_MESSAGE, type: 'info' }
+    ]);
   }
 
   // ---------------------------------------------
@@ -636,7 +735,6 @@
     });
 
     step2Back?.addEventListener('click', () => showStep(1));
-    
     step2Next?.addEventListener('click', () => {
       if (!validateStep2()) return;
       tempData.matricule = getMatriculeFromOverlay();
