@@ -1,5 +1,5 @@
 // ===== index.js - Site Stagiaire =====
-// Version sans overlay - Redirection vers profil.html si profil incomplet
+// Version FINALE avec messages dynamiques (6s/8s) + matricule auto
 
 (function() {
   const SUPABASE_URL = 'https://lnwrwvwunwsqeuluupis.supabase.co';
@@ -14,17 +14,29 @@
   let currentFile = null;
   let currentFileCategorie = null;
   let searchTimeout = null;
+  let etape = 1;
   let messageTimeout = null;
   let messageInterval = null;
 
+  // Données temporaires pour l'overlay
+  let tempData = {
+    nom: '',
+    prenom: '',
+    matricule: '',
+    telephone: ''
+  };
+
+  // Messages par défaut
   const DEFAULT_MESSAGE = 'Saisissez votre matricule pour accéder à votre fiche';
 
   // ---------------------------------------------
   // ÉLÉMENTS DOM
   // ---------------------------------------------
   const loadingOverlay = document.getElementById('loadingOverlay');
+  const infoOverlay = document.getElementById('infoOverlay');
   const miniLoader = document.getElementById('miniLoader');
   const infoMessage = document.getElementById('infoMessage');
+  const infoBar = document.getElementById('infoBar');
   const filePlaceholder = document.getElementById('filePlaceholder');
   const filePreview = document.getElementById('filePreview');
   const fileName = document.getElementById('fileName');
@@ -47,8 +59,40 @@
     document.getElementById('case9')
   ];
 
+  // Éléments overlay étape 1
+  const step1 = document.getElementById('step1');
+  const step1Next = document.getElementById('step1Next');
+  const stepNom = document.getElementById('stepNom');
+  const stepPrenom = document.getElementById('stepPrenom');
+
+  // Éléments overlay étape 2
+  const step2 = document.getElementById('step2');
+  const step2Back = document.getElementById('step2Back');
+  const step2Next = document.getElementById('step2Next');
+  const stepCases = [
+    document.getElementById('stepCase1'),
+    document.getElementById('stepCase2'),
+    document.getElementById('stepCase3'),
+    document.getElementById('stepCase4'),
+    document.getElementById('stepCase5'),
+    document.getElementById('stepCase6'),
+    document.getElementById('stepCase7'),
+    document.getElementById('stepCase8'),
+    document.getElementById('stepCase9')
+  ];
+  const stepTelephone = document.getElementById('stepTelephone');
+
+  // Éléments overlay étape 3
+  const step3 = document.getElementById('step3');
+  const step3Back = document.getElementById('step3Back');
+  const step3Save = document.getElementById('step3Save');
+  const confirmNom = document.getElementById('confirmNom');
+  const confirmPrenom = document.getElementById('confirmPrenom');
+  const confirmMatricule = document.getElementById('confirmMatricule');
+  const confirmTelephone = document.getElementById('confirmTelephone');
+
   // ---------------------------------------------
-  // GESTION MESSAGES
+  // GESTION MESSAGES DYNAMIQUES
   // ---------------------------------------------
   function clearMessageTimers() {
     if (messageTimeout) clearTimeout(messageTimeout);
@@ -64,6 +108,7 @@
     
     const showMessage = (idx) => {
       if (idx >= messages.length) {
+        // Retour au message par défaut
         updateInfoMessage(DEFAULT_MESSAGE, 'info');
         return;
       }
@@ -71,6 +116,7 @@
       const msg = messages[idx];
       updateInfoMessage(msg.text, msg.type);
       
+      // Programmer le suivant
       messageTimeout = setTimeout(() => {
         showMessage(idx + 1);
       }, msg.duration || 6000);
@@ -110,12 +156,14 @@
         return;
       }
       
+      // Message de chargement
       setAutoMessage([
         { text: 'Chargement de votre profil...', type: 'info', duration: 2000 }
       ]);
       
       await loadUserData();
       setupMatriculeCases();
+      setupOverlayCases();
       setupEventListeners();
       
     } catch (error) {
@@ -172,17 +220,19 @@
 
       if (error) {
         console.error('Erreur chargement securite:', error);
-        handleIncompleteProfile();
+        showInfoOverlay();
         return;
       }
 
       if (!data) {
-        handleIncompleteProfile();
+        showInfoOverlay();
         return;
       }
 
       currentSecurite = data;
       enableMatriculeCases();
+      
+      // Charger automatiquement le matricule dans les cases
       loadUserMatricule();
       
       if (!data.filiere) {
@@ -200,20 +250,13 @@
       
     } catch (error) {
       console.error('Erreur:', error);
-      handleIncompleteProfile();
+      showInfoOverlay();
     }
   }
 
-  function handleIncompleteProfile() {
-    currentSecurite = null;
-    disableMatriculeCases();
-    setAutoMessage([
-      { text: '⚠️ Complétez vos informations dans Profil', type: 'info', duration: 6000 },
-      { text: 'Allez dans le menu Profil pour continuer', type: 'info', duration: 6000 },
-      { text: DEFAULT_MESSAGE, type: 'info' }
-    ]);
-  }
-
+  // ---------------------------------------------
+  // CHARGEMENT AUTOMATIQUE DU MATRICULE
+  // ---------------------------------------------
   function loadUserMatricule() {
     if (!currentSecurite || !cases[0]) return;
     
@@ -228,6 +271,166 @@
       if (cases[i] && chiffres[i]) cases[i].value = chiffres[i];
     }
     if (cases[8] && lettre) cases[8].value = lettre;
+  }
+
+  // ---------------------------------------------
+  // OVERLAY 3 ÉTAPES
+  // ---------------------------------------------
+  function showInfoOverlay() {
+    disableMatriculeCases();
+    resetOverlayData();
+    infoOverlay.classList.remove('hidden');
+    showStep(1);
+  }
+
+  function hideInfoOverlay() {
+    infoOverlay.classList.add('hidden');
+  }
+
+  function showStep(num) {
+    etape = num;
+    step1.classList.add('hidden');
+    step2.classList.add('hidden');
+    step3.classList.add('hidden');
+    
+    if (num === 1) {
+      step1.classList.remove('hidden');
+      stepNom?.focus();
+    } else if (num === 2) {
+      step2.classList.remove('hidden');
+      stepCases[0]?.focus();
+      loadTempDataToStep2();
+    } else if (num === 3) {
+      step3.classList.remove('hidden');
+      updateConfirmStep();
+    }
+  }
+
+  function resetOverlayData() {
+    tempData = { nom: '', prenom: '', matricule: '', telephone: '' };
+    if (stepNom) stepNom.value = '';
+    if (stepPrenom) stepPrenom.value = '';
+    if (stepTelephone) stepTelephone.value = '';
+    stepCases.forEach(c => { if (c) c.value = ''; });
+  }
+
+  function loadTempDataToStep2() {
+    if (!tempData.matricule) return;
+    const parts = tempData.matricule.split(' ');
+    if (parts.length !== 2) return;
+    const chiffres = parts[0];
+    const lettre = parts[1];
+    for (let i = 0; i < 8; i++) {
+      if (stepCases[i] && chiffres[i]) stepCases[i].value = chiffres[i];
+    }
+    if (stepCases[8] && lettre) stepCases[8].value = lettre;
+    if (stepTelephone) stepTelephone.value = tempData.telephone;
+  }
+
+  function updateConfirmStep() {
+    if (confirmNom) confirmNom.textContent = tempData.nom || '-';
+    if (confirmPrenom) confirmPrenom.textContent = tempData.prenom || '-';
+    if (confirmMatricule) confirmMatricule.textContent = tempData.matricule || '-';
+    if (confirmTelephone) confirmTelephone.textContent = tempData.telephone || '-';
+  }
+
+  function validateStep1() {
+    if (!stepNom?.value.trim()) {
+      setAutoMessage([
+        { text: 'Nom requis', type: 'error', duration: 8000 },
+        { text: 'Veuillez entrer votre nom', type: 'info' }
+      ]);
+      stepNom?.focus();
+      return false;
+    }
+    if (!stepPrenom?.value.trim()) {
+      setAutoMessage([
+        { text: 'Prénom requis', type: 'error', duration: 8000 },
+        { text: 'Veuillez entrer votre prénom', type: 'info' }
+      ]);
+      stepPrenom?.focus();
+      return false;
+    }
+    return true;
+  }
+
+  function validateStep2() {
+    for (let i = 0; i < 8; i++) {
+      if (!stepCases[i]?.value) {
+        setAutoMessage([
+          { text: 'Matricule incomplet', type: 'error', duration: 8000 },
+          { text: 'Remplissez les 8 chiffres', type: 'info' }
+        ]);
+        return false;
+      }
+    }
+    if (!stepCases[8]?.value) {
+      setAutoMessage([
+        { text: 'Lettre du matricule manquante', type: 'error', duration: 8000 },
+        { text: 'Ajoutez la lettre (A-Z)', type: 'info' }
+      ]);
+      return false;
+    }
+    const tel = stepTelephone?.value.replace(/\D/g, '');
+    if (!tel || tel.length !== 10) {
+      setAutoMessage([
+        { text: 'Téléphone doit contenir 10 chiffres', type: 'error', duration: 8000 },
+        { text: 'Exemple: 0123456789', type: 'info' }
+      ]);
+      return false;
+    }
+    return true;
+  }
+
+  function getMatriculeFromOverlay() {
+    let chiffres = '';
+    for (let i = 0; i < 8; i++) chiffres += stepCases[i]?.value || '';
+    const lettre = stepCases[8]?.value || '';
+    return chiffres + ' ' + lettre;
+  }
+
+  async function saveToSecurite() {
+    try {
+      const { error } = await supabase
+        .from('securite')
+        .insert({
+          id: currentUser.id,
+          nom: tempData.nom,
+          prenom: tempData.prenom,
+          matricule: tempData.matricule,
+          telephone: tempData.telephone
+        });
+
+      if (error) throw error;
+
+      currentSecurite = {
+        id: currentUser.id,
+        nom: tempData.nom,
+        prenom: tempData.prenom,
+        matricule: tempData.matricule,
+        telephone: tempData.telephone,
+        filiere: null
+      };
+
+      hideInfoOverlay();
+      enableMatriculeCases();
+      
+      // Charger le matricule automatiquement
+      loadUserMatricule();
+      
+      setAutoMessage([
+        { text: 'Informations enregistrées', type: 'success', duration: 4000 },
+        { text: 'Renseignez votre filière dans Profil', type: 'info', duration: 6000 },
+        { text: DEFAULT_MESSAGE, type: 'info' }
+      ]);
+      
+    } catch (error) {
+      console.error('Erreur sauvegarde:', error);
+      setAutoMessage([
+        { text: 'Erreur lors de la sauvegarde', type: 'error', duration: 8000 },
+        { text: 'Réessayez ou contactez l\'assistance', type: 'info' }
+      ]);
+    }
   }
 
   // ---------------------------------------------
@@ -294,17 +497,34 @@
   }
 
   // ---------------------------------------------
+  // GESTION CASES OVERLAY
+  // ---------------------------------------------
+  function setupOverlayCases() {
+    stepCases.forEach((input, index) => {
+      if (!input) return;
+      
+      input.addEventListener('input', (e) => {
+        let value = e.target.value.toUpperCase();
+        if (index < 8) value = value.replace(/[^0-9]/g, '');
+        else value = value.replace(/[^A-Z]/g, '');
+        e.target.value = value;
+        if (value.length === 1 && index < 8) {
+          stepCases[index + 1]?.focus();
+        }
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          stepCases[index - 1]?.focus();
+        }
+      });
+    });
+  }
+
+  // ---------------------------------------------
   // RECHERCHE
   // ---------------------------------------------
   function startSearch() {
-    if (!currentSecurite) {
-      setAutoMessage([
-        { text: '⚠️ Complétez d\'abord votre profil', type: 'error', duration: 8000 },
-        { text: 'Allez dans Profil pour continuer', type: 'info' }
-      ]);
-      return;
-    }
-    
     miniLoader?.classList.remove('hidden');
     setAutoMessage([
       { text: 'Recherche en cours...', type: 'info', duration: 2000 }
@@ -357,8 +577,8 @@
     if (!currentSecurite) {
       stopSearch();
       setAutoMessage([
-        { text: 'Profil non chargé - Complétez votre profil', type: 'error', duration: 8000 },
-        { text: 'Allez dans Profil pour continuer', type: 'info' }
+        { text: 'Profil non chargé - Rechargez la page', type: 'error', duration: 8000 },
+        { text: DEFAULT_MESSAGE, type: 'info' }
       ]);
       return;
     }
@@ -374,7 +594,7 @@
       ]);
       resetInterface();
       clearHeaderCases();
-      loadUserMatricule();
+      loadUserMatricule(); // Remet le bon matricule
       return;
     }
 
@@ -495,7 +715,7 @@
 
   function cancelFile() {
     clearHeaderCases();
-    loadUserMatricule();
+    loadUserMatricule(); // Remet le bon matricule
     resetInterface();
     setAutoMessage([
       { text: 'Saisie annulée', type: 'info', duration: 3000 },
@@ -507,6 +727,24 @@
   // ÉCOUTEURS
   // ---------------------------------------------
   function setupEventListeners() {
+    step1Next?.addEventListener('click', () => {
+      if (!validateStep1()) return;
+      tempData.nom = stepNom.value.trim();
+      tempData.prenom = stepPrenom.value.trim();
+      showStep(2);
+    });
+
+    step2Back?.addEventListener('click', () => showStep(1));
+    step2Next?.addEventListener('click', () => {
+      if (!validateStep2()) return;
+      tempData.matricule = getMatriculeFromOverlay();
+      tempData.telephone = stepTelephone.value.trim();
+      showStep(3);
+    });
+
+    step3Back?.addEventListener('click', () => showStep(2));
+    step3Save?.addEventListener('click', saveToSecurite);
+
     downloadBtn?.addEventListener('click', downloadFile);
     shareBtn?.addEventListener('click', shareFile);
     cancelBtn?.addEventListener('click', cancelFile);
