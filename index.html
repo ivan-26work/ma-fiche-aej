@@ -23,7 +23,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
-  <!-- Styles -->
+  <!-- Style CSS -->
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -35,128 +35,9 @@
     </div>
   </div>
 
-  <!-- OVERLAY DE COLLECTE D'INFORMATIONS (3 ÉTAPES) -->
-  <div class="info-overlay hidden" id="infoOverlay">
-    <div class="overlay-backdrop"></div>
-    <div class="info-overlay-container">
-      
-      <!-- ÉTAPE 1 : Nom et Prénom -->
-      <div class="info-step" id="step1">
-        <div class="step-header">
-          <span class="step-title">Étape 1/3 - Identité</span>
-        </div>
-        <div class="step-content">
-          <div class="form-group">
-            <label for="stepNom">Nom complet</label>
-            <input type="text" id="stepNom" class="step-input" placeholder="Votre nom" autocomplete="family-name">
-          </div>
-          <div class="form-group">
-            <label for="stepPrenom">Prénom(s)</label>
-            <input type="text" id="stepPrenom" class="step-input" placeholder="Votre prénom" autocomplete="given-name">
-          </div>
-        </div>
-        <div class="step-footer">
-          <button class="step-btn" id="step1Next">Continuer</button>
-        </div>
-      </div>
-
-      <!-- ÉTAPE 2 : Matricule et Téléphone -->
-      <div class="info-step hidden" id="step2">
-        <div class="step-header">
-          <span class="step-title">Étape 2/3 - Coordonnées</span>
-        </div>
-        <div class="step-content">
-          <div class="matricule-group">
-            <label>Matricule AEJ (8 chiffres + 1 lettre)</label>
-            <div class="matricule-cases-overlay">
-              <input type="text" class="case-overlay" id="stepCase1" maxlength="1" inputmode="numeric" placeholder="1">
-              <input type="text" class="case-overlay" id="stepCase2" maxlength="1" inputmode="numeric" placeholder="9">
-              <input type="text" class="case-overlay" id="stepCase3" maxlength="1" inputmode="numeric" placeholder="1">
-              <input type="text" class="case-overlay" id="stepCase4" maxlength="1" inputmode="numeric" placeholder="6">
-              <input type="text" class="case-overlay" id="stepCase5" maxlength="1" inputmode="numeric" placeholder="7">
-              <input type="text" class="case-overlay" id="stepCase6" maxlength="1" inputmode="numeric" placeholder="1">
-              <input type="text" class="case-overlay" id="stepCase7" maxlength="1" inputmode="numeric" placeholder="2">
-              <input type="text" class="case-overlay" id="stepCase8" maxlength="1" inputmode="numeric" placeholder="2">
-              <input type="text" class="case-overlay letter" id="stepCase9" maxlength="1" placeholder="F">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="stepTelephone">Numéro de téléphone (10 chiffres)</label>
-            <input type="tel" id="stepTelephone" class="step-input" placeholder="0123456789" maxlength="10" inputmode="numeric" autocomplete="tel">
-          </div>
-        </div>
-        <div class="step-footer" style="justify-content: space-between;">
-          <button class="step-btn secondary" id="step2Back">← Retour</button>
-          <button class="step-btn" id="step2Next">Valider</button>
-        </div>
-      </div>
-
-      <!-- ÉTAPE 3 : Confirmation -->
-      <div class="info-step hidden" id="step3">
-        <div class="step-header">
-          <span class="step-title">Étape 3/3 - Vérification</span>
-        </div>
-        <div class="step-content">
-          <p class="confirm-text">Vérifiez vos informations avant validation :</p>
-          <div class="confirm-card">
-            <div class="confirm-row">
-              <span class="confirm-label">Nom :</span>
-              <span class="confirm-value" id="confirmNom"></span>
-            </div>
-            <div class="confirm-row">
-              <span class="confirm-label">Prénom :</span>
-              <span class="confirm-value" id="confirmPrenom"></span>
-            </div>
-            <div class="confirm-row">
-              <span class="confirm-label">Matricule :</span>
-              <span class="confirm-value" id="confirmMatricule"></span>
-            </div>
-            <div class="confirm-row">
-              <span class="confirm-label">Téléphone :</span>
-              <span class="confirm-value" id="confirmTelephone"></span>
-            </div>
-          </div>
-          <p class="confirm-warning">⚠️ Ces informations seront définitives et ne pourront pas être modifiées ultérieurement.</p>
-        </div>
-        <div class="step-footer" style="justify-content: space-between;">
-          <button class="step-btn secondary" id="step3Back">← Modifier</button>
-          <button class="step-btn" id="step3Save">Valider et enregistrer</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- BARRE DE NAVIGATION (pendant étapes) - Style auth -->
-  <div class="steps-nav" id="stepsNav">
-    <a href="contact.html" class="steps-nav-link">
-      <i class="fas fa-phone-alt"></i>
-      <span>Contact</span>
-    </a>
-    <a href="confidentialite.html" class="steps-nav-link">
-      <i class="fas fa-lock"></i>
-      <span>Confidentialité</span>
-    </a>
-    <a href="apropos.html" class="steps-nav-link">
-      <i class="fas fa-info-circle"></i>
-      <span>À propos</span>
-    </a>
-  </div>
-
-  <!-- HEADER GLASSMORPHISM -->
-  <header class="header">
-    <a href="index.html" class="logo-circle">
-      <img src="assets/logo.png" alt="Logo AEJ" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'url(%23g)\'/%3E%3Cdefs%3E%3ClinearGradient id=\'g\' x1=\'0%25\' y1=\'0%25\' x2=\'100%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' stop-color=\'%234a90e2\'/%3E%3Cstop offset=\'100%25\' stop-color=\'%23ff7e9f\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x=\'50\' y=\'70\' font-size=\'50\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\'%3EAEJ%3C/text%3E%3C/svg%3E';">
-    </a>
-    <span class="site-name">stagiaire</span>
-    <button class="theme-toggle" id="themeToggle" aria-label="Thème">
-      <i class="fas fa-moon"></i>
-    </button>
-  </header>
-
   <!-- CASES MATRICULE -->
   <div class="cases-container">
-    <div class="matricule-cases" id="matriculeCasesContainer">
+    <div class="matricule-cases">
       <input type="text" class="case" id="case1" maxlength="1" placeholder="1" inputmode="numeric" disabled>
       <input type="text" class="case" id="case2" maxlength="1" placeholder="9" inputmode="numeric" disabled>
       <input type="text" class="case" id="case3" maxlength="1" placeholder="1" inputmode="numeric" disabled>
@@ -182,7 +63,7 @@
     <div class="file-card" id="fileCard">
       <div class="mini-loader hidden" id="miniLoader">
         <div class="mini-spinner"></div>
-        <p>Recherche de votre fiche...</p>
+        <p>Recherche</p>
       </div>
 
       <div class="file-name hidden" id="fileName">
