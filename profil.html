@@ -2,8 +2,34 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Stagiaire • Profil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+  
+  <!-- SEO - Balises principales -->
+  <title>AEJ • Mon Profil - Espace Stagiaire</title>
+  <meta name="description" content="Gérez votre profil stagiaire AEJ : consultez vos informations, modifiez votre numéro de téléphone, renseignez votre filière et visualisez l'historique de vos téléchargements.">
+  <meta name="keywords" content="AEJ, profil stagiaire, modifier téléphone, filière, historique téléchargements, espace personnel">
+  <meta name="author" content="Agence Emploi Jeunes">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ivan-26work.github.io/ma-fiche-aej/profil.html">
+  <meta property="og:title" content="AEJ - Mon Profil Stagiaire">
+  <meta property="og:description" content="Gérez vos informations personnelles et consultez l'historique de vos téléchargements.">
+  <meta property="og:image" content="https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:locale" content="fr_FR">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://ivan-26work.github.io/ma-fiche-aej/profil.html">
+  <meta name="twitter:title" content="AEJ - Mon Profil Stagiaire">
+  <meta name="twitter:description" content="Gérez vos informations personnelles.">
+  <meta name="twitter:image" content="https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://ivan-26work.github.io/ma-fiche-aej/profil.html">
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -17,8 +43,9 @@
   <!-- LOADER INITIAL -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-card">
-      <div class="loading-title">PROFIL</div>
       <div class="loading-spinner"></div>
+      <div class="loading-title">MON PROFIL</div>
+      <p class="loading-text">Chargement de vos informations...</p>
     </div>
   </div>
 
@@ -31,13 +58,13 @@
         <span>Information importante</span>
       </div>
       <div class="filiere-overlay-content">
-        <p>Vous êtes sur le point de renseigner votre <strong>filière</strong>.</p>
-        <p class="warning-text">Cette action est <strong>définitive</strong> et ne pourra pas être modifiée par la suite.</p>
+        <p>Vous êtes sur le point de renseigner votre <strong>filière de formation</strong>.</p>
+        <p class="warning-text">⚠️ Cette action est <strong>définitive</strong> et ne pourra pas être modifiée par la suite.</p>
         <p>Vérifiez bien votre filière avant de confirmer.</p>
         
         <div class="form-group">
           <label for="filiereInput">Votre filière</label>
-          <input type="text" id="filiereInput" class="filiere-input" placeholder="Ex: Informatique, Commerce, ..." autocomplete="off">
+          <input type="text" id="filiereInput" class="filiere-input" placeholder="Ex: Informatique, Commerce, BTP, Électricité..." autocomplete="off">
         </div>
       </div>
       <div class="filiere-overlay-footer">
@@ -49,7 +76,7 @@
 
   <!-- HEADER AVEC RETOUR -->
   <header class="header">
-    <a href="index.html" class="back-btn" id="backBtn" aria-label="Retour">
+    <a href="index.html" class="back-btn" id="backBtn" aria-label="Retour à l'accueil">
       <i class="fas fa-arrow-left"></i>
     </a>
     <span class="page-title">MON PROFIL</span>
@@ -66,36 +93,36 @@
       </div>
       
       <div class="card-content">
-        <!-- Ligne Nom (lecture seule) -->
+        <!-- Nom (lecture seule) -->
         <div class="info-row">
           <span class="info-label">Nom</span>
           <span class="info-value" id="displayNom">-</span>
         </div>
 
-        <!-- Ligne Prénom (lecture seule) -->
+        <!-- Prénom (lecture seule) -->
         <div class="info-row">
-          <span class="info-label">Prénom</span>
+          <span class="info-label">Prénom(s)</span>
           <span class="info-value" id="displayPrenom">-</span>
         </div>
 
-        <!-- Ligne Matricule (lecture seule) -->
+        <!-- Matricule (lecture seule) -->
         <div class="info-row">
-          <span class="info-label">Matricule</span>
+          <span class="info-label">Matricule AEJ</span>
           <span class="info-value matricule" id="displayMatricule">-</span>
         </div>
 
-        <!-- Ligne Email (lecture seule) -->
+        <!-- Email (lecture seule) -->
         <div class="info-row">
-          <span class="info-label">Email</span>
+          <span class="info-label">Adresse email</span>
           <span class="info-value" id="displayEmail">-</span>
         </div>
 
-        <!-- Ligne Téléphone (modifiable) -->
+        <!-- Téléphone (modifiable) -->
         <div class="info-row" id="telephoneRow">
           <span class="info-label">Téléphone</span>
           <div class="telephone-container">
             <span class="info-value" id="displayTelephone">-</span>
-            <button class="edit-btn" id="editTelephoneBtn" title="Modifier">
+            <button class="edit-btn" id="editTelephoneBtn" title="Modifier le numéro de téléphone">
               <i class="fas fa-pen"></i>
             </button>
           </div>
@@ -103,19 +130,19 @@
 
         <!-- Formulaire modification téléphone (caché par défaut) -->
         <div class="edit-form hidden" id="editTelephoneForm">
-          <input type="tel" id="editTelephoneInput" class="edit-input" placeholder="0123456789" maxlength="10" inputmode="numeric">
+          <input type="tel" id="editTelephoneInput" class="edit-input" placeholder="0123456789" maxlength="10" inputmode="numeric" autocomplete="tel">
           <div class="edit-actions">
             <button class="edit-action-btn cancel" id="cancelEditTelephone">Annuler</button>
             <button class="edit-action-btn save" id="saveEditTelephone">Sauvegarder</button>
           </div>
         </div>
 
-        <!-- Ligne Filière (définitive) -->
+        <!-- Filière (définitive) -->
         <div class="info-row" id="filiereRow">
           <span class="info-label">Filière</span>
           <div class="filiere-container">
             <span class="info-value filiere-value" id="displayFiliere">-</span>
-            <button class="edit-btn" id="editFiliereBtn" title="Renseigner">
+            <button class="edit-btn" id="editFiliereBtn" title="Renseigner ma filière (définitif)">
               <i class="fas fa-plus"></i>
             </button>
           </div>
@@ -127,27 +154,27 @@
     <div class="profil-card" id="historiqueCard">
       <div class="card-header">
         <i class="fas fa-history"></i>
-        <h2>Derniers accès</h2>
+        <h2>Historique des téléchargements</h2>
       </div>
       
       <div class="card-content historique-content">
-        <!-- Liste des téléchargements (injectée par JS) -->
         <div class="historique-list" id="historiqueList">
           <div class="empty-historique">
             <i class="fas fa-download"></i>
             <p>Aucun téléchargement récent</p>
           </div>
         </div>
+        <p class="historique-info">Les 10 derniers téléchargements sont affichés.</p>
       </div>
     </div>
 
     <!-- BOUTON DÉCONNEXION -->
     <button class="logout-btn" id="logoutBtn">
-      <i class="fas fa-sign-out-alt"></i> Déconnexion
+      <i class="fas fa-sign-out-alt"></i> Me déconnecter
     </button>
   </main>
 
-  <!-- Script JavaScript -->
+  <!-- Scripts -->
   <script src="js/theme.js"></script>
   <script src="js/profil.js"></script>
 </body>
