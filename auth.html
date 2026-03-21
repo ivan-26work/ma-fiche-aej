@@ -2,8 +2,34 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Stagiaire • Authentification</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  
+  <!-- SEO - Balises principales -->
+  <title>AEJ • Espace Stagiaire - Connexion et Inscription</title>
+  <meta name="description" content="Accédez à votre espace stagiaire AEJ. Connectez-vous ou créez votre compte pour télécharger votre fiche officielle.">
+  <meta name="keywords" content="AEJ, espace stagiaire, connexion stagiaire, inscription AEJ, fiche AEJ, Agence Emploi Jeunes">
+  <meta name="author" content="Agence Emploi Jeunes">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ivan-26work.github.io/ma-fiche-aej/auth.html">
+  <meta property="og:title" content="AEJ - Connexion Espace Stagiaire">
+  <meta property="og:description" content="Connectez-vous à votre espace stagiaire AEJ pour accéder à votre fiche d'inscription officielle.">
+  <meta property="og:image" content="https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:locale" content="fr_FR">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://ivan-26work.github.io/ma-fiche-aej/auth.html">
+  <meta name="twitter:title" content="AEJ - Connexion Espace Stagiaire">
+  <meta name="twitter:description" content="Accédez à votre espace stagiaire AEJ.">
+  <meta name="twitter:image" content="https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://ivan-26work.github.io/ma-fiche-aej/auth.html">
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -14,113 +40,129 @@
   <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
-  <!-- HEADER FIXE -->
-  <header class="header">
-    <a href="index.html" class="logo-circle" aria-label="Stagiaire">
-      <img src="assets/logo.png" alt="Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'url(%23g)\'/%3E%3Cdefs%3E%3ClinearGradient id=\'g\' x1=\'0%25\' y1=\'0%25\' x2=\'100%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' stop-color=\'%234a90e2\'/%3E%3Cstop offset=\'100%25\' stop-color=\'%23ff7e9f\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x=\'50\' y=\'70\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\'%3ES%3C/text%3E%3C/svg%3E';">
-    </a>
-    <span class="site-name-3d">ESPACE STAGIAIRE</span>
-  </header>
+  <!-- LOADER INITIAL -->
+  <div class="loading-overlay hidden" id="loadingOverlay">
+    <div class="loading-card">
+      <div class="loading-spinner"></div>
+      <div class="loading-title">ESPACE STAGIAIRE</div>
+      <p class="loading-text">Connexion en cours...</p>
+    </div>
+  </div>
 
   <!-- CONTENU PRINCIPAL -->
   <main class="main-content">
-    <!-- CARTE AUTH -->
-    <div class="auth-card">
-      <!-- ONGLETS -->
-      <div class="auth-tabs">
-        <button class="tab-btn active" id="tabLogin">Connexion</button>
-        <button class="tab-btn" id="tabSignup">Inscription</button>
+    <div class="auth-container">
+      <!-- Logo -->
+      <div class="logo-container">
+        <div class="logo-circle">
+          <img src="assets/logo.png" alt="Logo AEJ - Agence Emploi Jeunes" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'url(%23g)\'/%3E%3Cdefs%3E%3ClinearGradient id=\'g\' x1=\'0%25\' y1=\'0%25\' x2=\'100%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' stop-color=\'%234a90e2\'/%3E%3Cstop offset=\'100%25\' stop-color=\'%23ff7e9f\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x=\'50\' y=\'70\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\'%3EAEJ%3C/text%3E%3C/svg%3E';">
+        </div>
+        <h1>AEJ</h1>
+        <p>Espace Stagiaire</p>
       </div>
 
-      <!-- FORMULAIRE CONNEXION -->
-      <form class="auth-form" id="formLogin" novalidate>
-        <div class="form-group">
-          <div class="input-icon">
-            <i class="fas fa-envelope"></i>
-            <input type="email" placeholder="Email" id="loginEmail" required>
-          </div>
+      <!-- Carte d'authentification -->
+      <div class="auth-card">
+        <!-- Onglets -->
+        <div class="auth-tabs">
+          <button class="tab-btn active" id="tabLogin">Connexion</button>
+          <button class="tab-btn" id="tabSignup">Inscription</button>
         </div>
 
-        <div class="form-group">
-          <div class="input-icon">
-            <i class="fas fa-lock"></i>
-            <input type="password" placeholder="Mot de passe" id="loginPassword" required>
-          </div>
-          <button type="button" class="toggle-password" id="toggleLoginPassword" tabindex="-1">
-            <i class="fas fa-eye"></i>
-          </button>
-        </div>
-
-        <div class="form-options">
-          <label class="checkbox-label">
-            <input type="checkbox" checked> Se souvenir de moi
-          </label>
-          <a href="#" class="forgot-link" id="forgotPassword">Mot de passe oublié ?</a>
-        </div>
-
-        <button type="submit" class="btn-submit" id="btnLogin">Se connecter</button>
-      </form>
-
-      <!-- FORMULAIRE INSCRIPTION (simplifié) -->
-      <form class="auth-form hidden" id="formSignup" novalidate>
-        <div class="form-group">
-          <div class="input-icon">
-            <i class="fas fa-envelope"></i>
-            <input type="email" placeholder="Email" id="signupEmail" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="input-icon">
-            <i class="fas fa-lock"></i>
-            <input type="password" placeholder="Mot de passe" id="signupPassword" required>
-          </div>
-          <button type="button" class="toggle-password" id="toggleSignupPassword" tabindex="-1">
-            <i class="fas fa-eye"></i>
-          </button>
-        </div>
-
-        <div class="form-group">
-          <div class="input-icon">
-            <i class="fas fa-lock"></i>
-            <input type="password" placeholder="Confirmer mot de passe" id="signupConfirm" required>
-          </div>
-          <button type="button" class="toggle-password" id="toggleSignupConfirm" tabindex="-1">
-            <i class="fas fa-eye"></i>
-          </button>
-        </div>
-
-        <div class="form-options">
-          <label class="checkbox-label">
-            <input type="checkbox" id="acceptTerms" required> J'accepte les conditions d'utilisation
-          </label>
-        </div>
-
-        <button type="submit" class="btn-submit" id="btnSignup">Créer mon compte</button>
-      </form>
-
-      <!-- MODALE RÉINITIALISATION -->
-      <div class="modal hidden" id="forgotModal">
-        <div class="modal-content">
-          <h3>Réinitialisation mot de passe</h3>
-          <p>Entrez votre email pour recevoir un lien</p>
+        <!-- FORMULAIRE CONNEXION -->
+        <form class="auth-form" id="formLogin" novalidate>
           <div class="form-group">
             <div class="input-icon">
               <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Votre email" id="resetEmail">
+              <input type="email" id="loginEmail" placeholder="Adresse email" required autocomplete="email">
             </div>
           </div>
-          
-          <div class="modal-buttons">
-            <button class="btn-modal btn-cancel" id="cancelReset">Annuler</button>
-            <button class="btn-modal btn-send" id="sendReset">Envoyer</button>
+
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="loginPassword" placeholder="Mot de passe" required autocomplete="current-password">
+            </div>
+            <button type="button" class="toggle-password" id="toggleLoginPassword" tabindex="-1" aria-label="Afficher/masquer le mot de passe">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-label">
+              <input type="checkbox" checked> Se souvenir de moi
+            </label>
+            <a href="#" class="forgot-link" id="forgotPassword">Mot de passe oublié ?</a>
+          </div>
+
+          <button type="submit" class="btn-submit" id="btnLogin">
+            <i class="fas fa-arrow-right"></i> Se connecter
+          </button>
+        </form>
+
+        <!-- FORMULAIRE INSCRIPTION (simplifié) -->
+        <form class="auth-form hidden" id="formSignup" novalidate>
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="signupEmail" placeholder="Adresse email" required autocomplete="email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="signupPassword" placeholder="Mot de passe" required autocomplete="new-password">
+            </div>
+            <button type="button" class="toggle-password" id="toggleSignupPassword" tabindex="-1" aria-label="Afficher/masquer le mot de passe">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="signupConfirm" placeholder="Confirmer le mot de passe" required autocomplete="off">
+            </div>
+            <button type="button" class="toggle-password" id="toggleSignupConfirm" tabindex="-1" aria-label="Afficher/masquer le mot de passe">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-label">
+              <input type="checkbox" id="acceptTerms" required> J'accepte les <a href="conditions.html" target="_blank">conditions d'utilisation</a>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-submit" id="btnSignup">Créer mon compte</button>
+          <p class="form-info">Après inscription, vous devrez compléter votre profil (nom, prénom, matricule, téléphone).</p>
+        </form>
+
+        <!-- MODALE RÉINITIALISATION -->
+        <div class="modal hidden" id="forgotModal">
+          <div class="modal-backdrop"></div>
+          <div class="modal-content">
+            <h3>Réinitialisation du mot de passe</h3>
+            <p>Saisissez votre email pour recevoir un lien de réinitialisation.</p>
+            <div class="form-group">
+              <div class="input-icon">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="resetEmail" placeholder="Votre email" autocomplete="email">
+              </div>
+            </div>
+            <div class="modal-buttons">
+              <button class="btn-modal btn-cancel" id="cancelReset">Annuler</button>
+              <button class="btn-modal btn-send" id="sendReset">Envoyer</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- Script JavaScript -->
+  <!-- Scripts -->
   <script src="js/auth.js"></script>
+  <script src="js/theme.js"></script>
 </body>
 </html>
