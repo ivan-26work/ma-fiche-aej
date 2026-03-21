@@ -627,3 +627,42 @@ body.night-mode .action-btn {
 body.night-mode .case:disabled {
   border-color: rgba(255, 255, 255, 0.1);
 }
+/* ===== center-nav.css ===== */
+/* Centrage des boutons dans la barre de navigation */
+
+.main-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-scroll {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.footer-pills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+  height: 50px;
+  white-space: nowrap;
+}
+
+/* Pour mobile : garder le centrage mais permettre le scroll si trop de boutons */
+@media (max-width: 500px) {
+  .footer-pills {
+    justify-content: center;
+    padding: 0 1rem;
+  }
+  
+  .footer-scroll {
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+}
