@@ -1,5 +1,5 @@
 // ===== index.js - Site Stagiaire =====
-// Version FINALE avec messages dynamiques (6s/8s) + matricule auto
+// Version glassmorphism avec barre de navigation haut qui disparaît après étapes
 
 (function() {
   const SUPABASE_URL = 'https://lnwrwvwunwsqeuluupis.supabase.co';
@@ -26,7 +26,6 @@
     telephone: ''
   };
 
-  // Messages par défaut
   const DEFAULT_MESSAGE = 'Saisissez votre matricule pour accéder à votre fiche';
 
   // ---------------------------------------------
@@ -34,6 +33,7 @@
   // ---------------------------------------------
   const loadingOverlay = document.getElementById('loadingOverlay');
   const infoOverlay = document.getElementById('infoOverlay');
+  const stepsNav = document.getElementById('stepsNav');
   const miniLoader = document.getElementById('miniLoader');
   const infoMessage = document.getElementById('infoMessage');
   const infoBar = document.getElementById('infoBar');
@@ -92,7 +92,7 @@
   const confirmTelephone = document.getElementById('confirmTelephone');
 
   // ---------------------------------------------
-  // GESTION MESSAGES DYNAMIQUES
+  // GESTION MESSAGES
   // ---------------------------------------------
   function clearMessageTimers() {
     if (messageTimeout) clearTimeout(messageTimeout);
@@ -108,7 +108,6 @@
     
     const showMessage = (idx) => {
       if (idx >= messages.length) {
-        // Retour au message par défaut
         updateInfoMessage(DEFAULT_MESSAGE, 'info');
         return;
       }
@@ -116,7 +115,6 @@
       const msg = messages[idx];
       updateInfoMessage(msg.text, msg.type);
       
-      // Programmer le suivant
       messageTimeout = setTimeout(() => {
         showMessage(idx + 1);
       }, msg.duration || 6000);
@@ -156,7 +154,6 @@
         return;
       }
       
-      // Message de chargement
       setAutoMessage([
         { text: 'Chargement de votre profil...', type: 'info', duration: 2000 }
       ]);
@@ -231,9 +228,10 @@
 
       currentSecurite = data;
       enableMatriculeCases();
-      
-      // Charger automatiquement le matricule dans les cases
       loadUserMatricule();
+      
+      // Une fois le profil chargé, cacher la barre de navigation des étapes
+      if (stepsNav) stepsNav.classList.add('hidden');
       
       if (!data.filiere) {
         setAutoMessage([
@@ -254,9 +252,6 @@
     }
   }
 
-  // ---------------------------------------------
-  // CHARGEMENT AUTOMATIQUE DU MATRICULE
-  // ---------------------------------------------
   function loadUserMatricule() {
     if (!currentSecurite || !cases[0]) return;
     
@@ -280,11 +275,15 @@
     disableMatriculeCases();
     resetOverlayData();
     infoOverlay.classList.remove('hidden');
+    // Afficher la barre de navigation pendant les étapes
+    if (stepsNav) stepsNav.classList.remove('hidden');
     showStep(1);
   }
 
   function hideInfoOverlay() {
     infoOverlay.classList.add('hidden');
+    // Cacher la barre de navigation après validation
+    if (stepsNav) stepsNav.classList.add('hidden');
   }
 
   function showStep(num) {
@@ -414,8 +413,6 @@
 
       hideInfoOverlay();
       enableMatriculeCases();
-      
-      // Charger le matricule automatiquement
       loadUserMatricule();
       
       setAutoMessage([
@@ -594,7 +591,7 @@
       ]);
       resetInterface();
       clearHeaderCases();
-      loadUserMatricule(); // Remet le bon matricule
+      loadUserMatricule();
       return;
     }
 
@@ -715,7 +712,7 @@
 
   function cancelFile() {
     clearHeaderCases();
-    loadUserMatricule(); // Remet le bon matricule
+    loadUserMatricule();
     resetInterface();
     setAutoMessage([
       { text: 'Saisie annulée', type: 'info', duration: 3000 },
