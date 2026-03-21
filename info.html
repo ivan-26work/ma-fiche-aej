@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>AEJ • Actualités</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/info.css">
+</head>
+<body>
+  <!-- LOADER INITIAL -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-card">
+      <div class="loading-spinner"></div>
+      <div class="loading-title">AEJ</div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="logo-circle" aria-label="AEJ">
+      <img src="assets/logo.png" alt="Logo AEJ" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'url(%23g)\'/%3E%3Cdefs%3E%3ClinearGradient id=\'g\' x1=\'0%25\' y1=\'0%25\' x2=\'100%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' stop-color=\'%234a90e2\'/%3E%3Cstop offset=\'100%25\' stop-color=\'%23ff7e9f\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x=\'50\' y=\'70\' font-size=\'50\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\'%3EAEJ%3C/text%3E%3C/svg%3E';">
+    </a>
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-input" id="searchInput" placeholder="Rechercher une publication...">
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT - FLUX DES PUBLICATIONS -->
+  <main class="main-content" id="mainContent">
+    <div class="feed-container" id="feedContainer">
+      <!-- Les publications seront injectées ici -->
+    </div>
+  </main>
+
+  <!-- FOOTER - 3 ONGLETS -->
+  <footer class="footer-nav">
+    <a href="contact.html" class="footer-link">
+      <i class="fas fa-phone-alt"></i>
+      <span>Contact</span>
+    </a>
+    <a href="confidentialite.html" class="footer-link">
+      <i class="fas fa-lock"></i>
+      <span>Confidentialité</span>
+    </a>
+    <a href="apropos.html" class="footer-link">
+      <i class="fas fa-info-circle"></i>
+      <span>À propos</span>
+    </a>
+  </footer>
+
+  <!-- OVERLAY PLEIN ÉCRAN -->
+  <div class="fullscreen-overlay hidden" id="fullscreenOverlay">
+    <div class="fullscreen-backdrop" id="fullscreenBackdrop"></div>
+    <div class="fullscreen-container">
+      <button class="fullscreen-close" id="fullscreenClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="fullscreen-content" id="fullscreenContent">
+        <!-- Contenu plein écran injecté ici -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/theme.js"></script>
+  <script src="js/info.js"></script>
+</body>
+</html>
