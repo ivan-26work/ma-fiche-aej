@@ -58,6 +58,82 @@
   
   <!-- Style CSS -->
   <link rel="stylesheet" href="css/auth.css">
+  
+  <style>
+    /* Footer navigation pour auth.html */
+    .footer-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 65px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      padding: 0 1rem;
+      z-index: 90;
+    }
+
+    .footer-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.7rem;
+      transition: all 0.2s;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+    }
+
+    .footer-link i {
+      font-size: 1.2rem;
+    }
+
+    .footer-link:hover {
+      color: var(--primary-pink);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Ajustement du padding body pour laisser place au footer */
+    body {
+      padding-bottom: 80px;
+    }
+
+    @media (min-width: 768px) {
+      .footer-nav {
+        max-width: 400px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        border-radius: 40px 40px 0 0;
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
+
+    /* Mode nuit */
+    body.night-mode .footer-nav {
+      background: rgba(35, 40, 47, 0.4);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
   <h1 class="visually-hidden">Authentification Espace Stagiaire AEJ</h1>
@@ -168,21 +244,30 @@
     </div>
   </main>
 
+  <!-- FOOTER NAVIGATION - Contact, À propos, FAQ -->
+  <footer class="footer-nav">
+    <a href="contact.html" class="footer-link">
+      <i class="fas fa-phone-alt"></i>
+      <span>Contact</span>
+    </a>
+    <a href="apropos.html" class="footer-link">
+      <i class="fas fa-info-circle"></i>
+      <span>À propos</span>
+    </a>
+    <a href="faq.html" class="footer-link">
+      <i class="fas fa-question-circle"></i>
+      <span>FAQ</span>
+    </a>
+  </footer>
+
   <!-- Script JavaScript -->
   <script src="js/auth.js"></script>
-  
-  <style>
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+  <script>
+    // Thème
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'night') {
+      document.body.classList.add('night-mode');
     }
-  </style>
+  </script>
 </body>
 </html>
