@@ -781,3 +781,117 @@ body {
     padding: 6px 0.8rem;
   }
 }
+/* ===== index-additional.css ===== */
+/* Styles additionnels pour l'espace stagiaire */
+
+/* Footer navigation - hauteur augmentée à 60px */
+.main-footer {
+  height: 60px !important;
+}
+
+.footer-scroll {
+  height: 60px !important;
+}
+
+.footer-pills {
+  height: 60px !important;
+  align-items: center !important;
+}
+
+.pill {
+  height: 44px !important;
+  padding: 0 1rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+/* Barre d'information - hauteur 50px */
+.info-bar {
+  height: 50px !important;
+  min-height: 50px !important;
+  margin: 0.5rem 0 !important;
+}
+
+.info-message {
+  height: 50px !important;
+  line-height: 50px !important;
+}
+
+/* Carte PDF - bordures rose et vert */
+.file-card {
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  animation: borderPulse 3s ease-in-out infinite;
+}
+
+.file-card::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(135deg, #ff7e9f, #4a90e2, #ff7e9f, #4a90e2);
+  border-radius: 50px;
+  z-index: -1;
+  animation: borderRotate 4s linear infinite;
+}
+
+/* Animation de la bordure */
+@keyframes borderRotate {
+  0% {
+    background: linear-gradient(135deg, #ff7e9f, #4a90e2);
+  }
+  25% {
+    background: linear-gradient(225deg, #ff7e9f, #4a90e2);
+  }
+  50% {
+    background: linear-gradient(315deg, #ff7e9f, #4a90e2);
+  }
+  75% {
+    background: linear-gradient(45deg, #ff7e9f, #4a90e2);
+  }
+  100% {
+    background: linear-gradient(135deg, #ff7e9f, #4a90e2);
+  }
+}
+
+/* Version simple sans animation (si souhaité) */
+.file-card.simple-border {
+  border: 2px solid #ff7e9f;
+  box-shadow: 0 0 0 2px #4a90e2, 0 0 0 4px rgba(255, 126, 159, 0.3);
+}
+
+/* Mode nuit - adaptation */
+body.night-mode .file-card::before {
+  background: linear-gradient(135deg, #ff7e9f, #4a90e2, #ff7e9f, #4a90e2);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .main-footer {
+    height: 55px !important;
+  }
+  
+  .info-bar {
+    height: 45px !important;
+    min-height: 45px !important;
+  }
+  
+  .info-message {
+    height: 45px !important;
+    line-height: 45px !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .pill {
+    height: 38px !important;
+    padding: 0 0.8rem !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .pill i {
+    font-size: 0.9rem !important;
+  }
+}
