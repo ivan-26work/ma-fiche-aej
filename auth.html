@@ -3,7 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Stagiaire • Authentification</title>
+  
+  <!-- SEO - Titre optimisé -->
+  <title>AEJ Stagiaire • Connexion et Inscription</title>
+  
+  <!-- SEO - Meta description -->
+  <meta name="description" content="Accédez à votre espace stagiaire AEJ. Connectez-vous ou créez votre compte pour télécharger votre fiche de stage, gérer votre profil et suivre vos téléchargements.">
+  <meta name="keywords" content="AEJ, Agence Emploi Jeunes, connexion stagiaire, inscription, espace personnel, fiche AEJ">
+  <meta name="author" content="Agence Emploi Jeunes">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ivan-26work.github.io/ma-fiche-aej/auth.html">
+  <meta property="og:title" content="AEJ - Connexion Stagiaire">
+  <meta property="og:description" content="Connectez-vous ou inscrivez-vous à l'espace stagiaire AEJ pour accéder à votre fiche et à vos informations personnelles.">
+  <meta property="og:image" content="https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:site_name" content="AEJ Espace Stagiaire">
+  <meta property="og:locale" content="fr_FR">
+  
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AEJ - Connexion Stagiaire">
+  <meta name="twitter:description" content="Connectez-vous à votre espace stagiaire AEJ.">
+  <meta name="twitter:image" content="https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png">
+  
+  <!-- Structured Data / Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Connexion Stagiaire AEJ",
+    "description": "Page d'authentification pour les stagiaires de l'Agence Emploi Jeunes",
+    "url": "https://ivan-26work.github.io/ma-fiche-aej/auth.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Agence Emploi Jeunes",
+      "logo": "https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png"
+    }
+  }
+  </script>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="canonical" href="https://ivan-26work.github.io/ma-fiche-aej/auth.html">
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -14,10 +60,12 @@
   <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
+  <h1 class="visually-hidden">Authentification Espace Stagiaire AEJ</h1>
+  
   <!-- HEADER FIXE -->
   <header class="header">
-    <a href="index.html" class="logo-circle" aria-label="Stagiaire">
-      <img src="assets/logo.png" alt="Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'url(%23g)\'/%3E%3Cdefs%3E%3ClinearGradient id=\'g\' x1=\'0%25\' y1=\'0%25\' x2=\'100%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' stop-color=\'%234a90e2\'/%3E%3Cstop offset=\'100%25\' stop-color=\'%23ff7e9f\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x=\'50\' y=\'70\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\'%3ES%3C/text%3E%3C/svg%3E';">
+    <a href="index.html" class="logo-circle" aria-label="Retour à l'accueil">
+      <img src="assets/logo.png" alt="Logo AEJ" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'url(%23g)\'/%3E%3Cdefs%3E%3ClinearGradient id=\'g\' x1=\'0%25\' y1=\'0%25\' x2=\'100%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' stop-color=\'%234a90e2\'/%3E%3Cstop offset=\'100%25\' stop-color=\'%23ff7e9f\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x=\'50\' y=\'70\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\'%3ES%3C/text%3E%3C/svg%3E';">
     </a>
     <span class="site-name-3d">ESPACE STAGIAIRE</span>
   </header>
@@ -37,7 +85,7 @@
         <div class="form-group">
           <div class="input-icon">
             <i class="fas fa-envelope"></i>
-            <input type="email" placeholder="Email" id="loginEmail" required>
+            <input type="email" placeholder="Adresse email" id="loginEmail" required>
           </div>
         </div>
 
@@ -46,7 +94,7 @@
             <i class="fas fa-lock"></i>
             <input type="password" placeholder="Mot de passe" id="loginPassword" required>
           </div>
-          <button type="button" class="toggle-password" id="toggleLoginPassword" tabindex="-1">
+          <button type="button" class="toggle-password" id="toggleLoginPassword" tabindex="-1" aria-label="Afficher le mot de passe">
             <i class="fas fa-eye"></i>
           </button>
         </div>
@@ -61,12 +109,12 @@
         <button type="submit" class="btn-submit" id="btnLogin">Se connecter</button>
       </form>
 
-      <!-- FORMULAIRE INSCRIPTION (simplifié) -->
+      <!-- FORMULAIRE INSCRIPTION -->
       <form class="auth-form hidden" id="formSignup" novalidate>
         <div class="form-group">
           <div class="input-icon">
             <i class="fas fa-envelope"></i>
-            <input type="email" placeholder="Email" id="signupEmail" required>
+            <input type="email" placeholder="Adresse email" id="signupEmail" required>
           </div>
         </div>
 
@@ -75,7 +123,7 @@
             <i class="fas fa-lock"></i>
             <input type="password" placeholder="Mot de passe" id="signupPassword" required>
           </div>
-          <button type="button" class="toggle-password" id="toggleSignupPassword" tabindex="-1">
+          <button type="button" class="toggle-password" id="toggleSignupPassword" tabindex="-1" aria-label="Afficher le mot de passe">
             <i class="fas fa-eye"></i>
           </button>
         </div>
@@ -83,16 +131,16 @@
         <div class="form-group">
           <div class="input-icon">
             <i class="fas fa-lock"></i>
-            <input type="password" placeholder="Confirmer mot de passe" id="signupConfirm" required>
+            <input type="password" placeholder="Confirmer le mot de passe" id="signupConfirm" required>
           </div>
-          <button type="button" class="toggle-password" id="toggleSignupConfirm" tabindex="-1">
+          <button type="button" class="toggle-password" id="toggleSignupConfirm" tabindex="-1" aria-label="Afficher le mot de passe">
             <i class="fas fa-eye"></i>
           </button>
         </div>
 
         <div class="form-options">
           <label class="checkbox-label">
-            <input type="checkbox" id="acceptTerms" required> J'accepte les conditions d'utilisation
+            <input type="checkbox" id="acceptTerms" required> J'accepte les <a href="confidentialite.html" target="_blank">conditions d'utilisation</a>
           </label>
         </div>
 
@@ -102,8 +150,8 @@
       <!-- MODALE RÉINITIALISATION -->
       <div class="modal hidden" id="forgotModal">
         <div class="modal-content">
-          <h3>Réinitialisation mot de passe</h3>
-          <p>Entrez votre email pour recevoir un lien</p>
+          <h3>Réinitialisation</h3>
+          <p>Entrez votre email pour recevoir un lien de réinitialisation</p>
           <div class="form-group">
             <div class="input-icon">
               <i class="fas fa-envelope"></i>
@@ -122,5 +170,19 @@
 
   <!-- Script JavaScript -->
   <script src="js/auth.js"></script>
+  
+  <style>
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </body>
 </html>
