@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  
+  <!-- SEO - Titre optimisé -->
+  <title>AEJ Stagiaire • Mentions légales</title>
+  
+  <!-- SEO - Meta description -->
+  <meta name="description" content="Mentions légales de l'espace stagiaire AEJ. Éditeur, hébergement, conditions d'utilisation et protection des données personnelles.">
+  <meta name="keywords" content="AEJ, mentions légales, éditeur, hébergement, conditions d'utilisation, RGPD">
+  <meta name="author" content="Agence Emploi Jeunes">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ivan-26work.github.io/ma-fiche-aej/mentions.html">
+  <meta property="og:title" content="AEJ - Mentions légales">
+  <meta property="og:description" content="Mentions légales de l'espace stagiaire AEJ.">
+  <meta property="og:image" content="https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:site_name" content="AEJ Espace Stagiaire">
+  <meta property="og:locale" content="fr_FR">
+  
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AEJ - Mentions légales">
+  <meta name="twitter:description" content="Mentions légales de l'espace stagiaire AEJ.">
+  <meta name="twitter:image" content="https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png">
+  
+  <!-- Structured Data / Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Mentions légales",
+    "description": "Mentions légales de l'espace stagiaire de l'Agence Emploi Jeunes",
+    "url": "https://ivan-26work.github.io/ma-fiche-aej/mentions.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Agence Emploi Jeunes",
+      "logo": "https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png"
+    }
+  }
+  </script>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="canonical" href="https://ivan-26work.github.io/ma-fiche-aej/mentions.html">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-blue: #4a90e2;
+      --primary-pink: #ff7e9f;
+      --gradient-main: linear-gradient(135deg, #4a90e2, #ff7e9f);
+      --bg-soft: #eef0f5;
+      --neu-shadow-light: 6px 6px 12px #d1d9e6, -6px -6px 12px #ffffff;
+      --neu-shadow-medium: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+      --neu-shadow-small: 3px 3px 6px #d1d9e6, -3px -3px 6px #ffffff;
+      --text-dark: #2c3e50;
+      --text-light: #6c7a8d;
+      --card-bg: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-soft);
+      min-height: 100vh;
+      color: var(--text-dark);
+      padding: 1rem 1rem 80px 1rem;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 1rem;
+      height: 70px;
+      background: var(--card-bg);
+      border-radius: 40px;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--neu-shadow-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .back-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card-bg);
+      box-shadow: var(--neu-shadow-small);
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 1.3rem;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      transform: translateX(-3px);
+      color: var(--primary-pink);
+    }
+
+    .page-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      padding: 0.5rem 1.5rem;
+      border-radius: 40px;
+      background: var(--card-bg);
+      box-shadow: var(--neu-shadow-small);
+      color: var(--text-dark);
+    }
+
+    .header-placeholder {
+      width: 46px;
+      height: 46px;
+    }
+
+    /* Main content */
+    .main-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Legal Card */
+    .legal-card {
+      background: var(--card-bg);
+      border-radius: 40px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--neu-shadow-light);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid rgba(255, 126, 159, 0.2);
+    }
+
+    .card-header i {
+      font-size: 1.8rem;
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .card-header h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .legal-content {
+      line-height: 1.6;
+      color: var(--text-dark);
+    }
+
+    .legal-content p {
+      margin-bottom: 1rem;
+    }
+
+    .legal-content h3 {
+      font-size: 1.1rem;
+      margin: 1.2rem 0 0.5rem 0;
+      color: var(--primary-pink);
+    }
+
+    .legal-content ul {
+      margin: 0.5rem 0 1rem 1.5rem;
+    }
+
+    .legal-content li {
+      margin-bottom: 0.3rem;
+    }
+
+    .legal-date {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      font-size: 0.8rem;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    /* Footer navigation */
+    .footer-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 65px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      padding: 0 1rem;
+      z-index: 90;
+    }
+
+    .footer-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.7rem;
+      transition: all 0.2s;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+    }
+
+    .footer-link i {
+      font-size: 1.2rem;
+    }
+
+    .footer-link:hover {
+      color: var(--primary-pink);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .footer-link.active {
+      color: var(--primary-pink);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      body {
+        padding: 0.8rem 0.8rem 75px 0.8rem;
+      }
+
+      .header {
+        height: 60px;
+        padding: 0 1rem;
+      }
+
+      .back-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+      }
+
+      .page-title {
+        font-size: 1rem;
+        padding: 0.3rem 1rem;
+      }
+
+      .header-placeholder {
+        width: 40px;
+        height: 40px;
+      }
+
+      .legal-card {
+        padding: 1.2rem;
+      }
+
+      .card-header h2 {
+        font-size: 1.1rem;
+      }
+
+      .footer-nav {
+        height: 55px;
+        gap: 1rem;
+      }
+
+      .footer-link {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.65rem;
+      }
+
+      .footer-link i {
+        font-size: 1rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .footer-nav {
+        max-width: 450px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        border-radius: 40px 40px 0 0;
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
+
+    /* Mode nuit */
+    body.night-mode {
+      --bg-soft: #1a1e24;
+      --text-dark: #e0e0e0;
+      --text-light: #a0b0c0;
+      --card-bg: #23282f;
+    }
+
+    body.night-mode .header,
+    body.night-mode .legal-card {
+      background: var(--card-bg);
+    }
+
+    body.night-mode .footer-nav {
+      background: rgba(35, 40, 47, 0.4);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="visually-hidden">Mentions légales - Espace Stagiaire AEJ</h1>
+
+  <!-- HEADER AVEC RETOUR -->
+  <header class="header">
+    <a href="index.html" class="back-btn" id="backBtn" aria-label="Retour à l'accueil">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <span class="page-title">MENTIONS LÉGALES</span>
+    <div class="header-placeholder"></div>
+  </header>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="main-content">
+    <div class="legal-card">
+      <div class="card-header">
+        <i class="fas fa-gavel"></i>
+        <h2>Mentions légales</h2>
+      </div>
+      
+      <div class="legal-content">
+        <p>Conformément aux dispositions de la loi n° 2013-450 du 19 juin 2013 relative à la société de l'information et à la protection des données personnelles en Côte d'Ivoire, les présentes mentions légales régissent l'utilisation du site <strong>Espace Stagiaire AEJ</strong>.</p>
+        
+        <h3>1. Éditeur du site</h3>
+        <p><strong>Agence Emploi Jeunes (AEJ)</strong><br>
+        Service de la Mairie de Jacqueville<br>
+        Jacqueville, Côte d'Ivoire<br>
+        Téléphone : <a href="tel:+2250503588336" style="color: var(--primary-pink);">+225 05 03 58 83 36</a><br>
+        Email : <a href="mailto:ipoteivan23@gmail.com" style="color: var(--primary-pink);">ipoteivan23@gmail.com</a><br>
+        Directeur de publication : Le Maire de Jacqueville</p>
+        
+        <h3>2. Hébergement</h3>
+        <p><strong>GitHub Pages</strong><br>
+        GitHub, Inc.<br>
+        88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis<br>
+        Site web : <a href="https://pages.github.com" target="_blank" style="color: var(--primary-pink);">https://pages.github.com</a></p>
+        
+        <h3>3. Conception et développement</h3>
+        <p>Site développé par l'équipe technique de l'Agence Emploi Jeunes.<br>
+        Technologies utilisées : HTML5, CSS3, JavaScript, Supabase (Base de données et authentification).</p>
+        
+        <h3>4. Propriété intellectuelle</h3>
+        <p>L'ensemble des éléments composant ce site (textes, logos, images, icônes, code source) sont la propriété exclusive de l'Agence Emploi Jeunes, sauf mention contraire. Toute reproduction, représentation, modification ou adaptation, partielle ou totale, est interdite sans autorisation préalable.</p>
+        
+        <h3>5. Protection des données personnelles</h3>
+        <p>Les données personnelles collectées sur ce site sont traitées conformément à la loi ivoirienne et au RGPD. Pour plus d'informations, consultez notre <a href="confidentialite.html" style="color: var(--primary-pink);">Politique de confidentialité</a>.</p>
+        
+        <h3>6. Cookies</h3>
+        <p>Ce site utilise des cookies strictement nécessaires au fonctionnement de l'authentification. Aucun cookie de tracking n'est utilisé.</p>
+        
+        <h3>7. Responsabilité</h3>
+        <p>L'Agence Emploi Jeunes s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site. Cependant, elle ne peut garantir l'exhaustivité des informations. En aucun cas, l'AEJ ne pourra être tenue responsable des dommages directs ou indirects résultant de l'utilisation de ce site.</p>
+        
+        <h3>8. Droit applicable</h3>
+        <p>Les présentes mentions légales sont régies par le droit ivoirien. En cas de litige, les tribunaux d'Abidjan sont seuls compétents.</p>
+      </div>
+      
+      <div class="legal-date">
+        Dernière mise à jour : 22 mars 2026
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER NAVIGATION -->
+  <footer class="footer-nav">
+    <a href="contact.html" class="footer-link">
+      <i class="fas fa-phone-alt"></i>
+      <span>Contact</span>
+    </a>
+    <a href="apropos.html" class="footer-link">
+      <i class="fas fa-info-circle"></i>
+      <span>À propos</span>
+    </a>
+    <a href="faq.html" class="footer-link">
+      <i class="fas fa-question-circle"></i>
+      <span>FAQ</span>
+    </a>
+  </footer>
+
+  <script>
+    // Thème
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'night') {
+      document.body.classList.add('night-mode');
+    }
+  </script>
+</body>
+</html>
