@@ -3,7 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Stagiaire • Profil</title>
+  
+  <!-- SEO - Titre optimisé -->
+  <title>AEJ Stagiaire • Mon Profil</title>
+  
+  <!-- SEO - Meta description -->
+  <meta name="description" content="Gérez votre profil stagiaire AEJ : consultez vos informations personnelles, modifiez votre numéro de téléphone, renseignez votre filière et visualisez l'historique de vos téléchargements.">
+  <meta name="keywords" content="AEJ, Agence Emploi Jeunes, profil stagiaire, fiche AEJ, téléchargements, filière, téléphone">
+  <meta name="author" content="Agence Emploi Jeunes">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ivan-26work.github.io/ma-fiche-aej/profil.html">
+  <meta property="og:title" content="AEJ - Mon Profil Stagiaire">
+  <meta property="og:description" content="Consultez et gérez vos informations personnelles sur votre espace stagiaire AEJ.">
+  <meta property="og:image" content="https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:site_name" content="AEJ Espace Stagiaire">
+  <meta property="og:locale" content="fr_FR">
+  
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AEJ - Mon Profil Stagiaire">
+  <meta name="twitter:description" content="Gérez votre profil stagiaire AEJ.">
+  <meta name="twitter:image" content="https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png">
+  
+  <!-- Structured Data / Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "name": "Mon Profil Stagiaire AEJ",
+    "description": "Page de gestion du profil stagiaire de l'Agence Emploi Jeunes",
+    "url": "https://ivan-26work.github.io/ma-fiche-aej/profil.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Agence Emploi Jeunes",
+      "logo": "https://ivan-26work.github.io/ma-fiche-aej/assets/logo.png"
+    }
+  }
+  </script>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="canonical" href="https://ivan-26work.github.io/ma-fiche-aej/profil.html">
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -14,6 +60,8 @@
   <link rel="stylesheet" href="css/profil.css">
 </head>
 <body>
+  <h1 class="visually-hidden">Mon Profil - Espace Stagiaire AEJ</h1>
+  
   <!-- LOADER INITIAL -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-card">
@@ -37,7 +85,7 @@
         
         <div class="form-group">
           <label for="filiereInput">Votre filière</label>
-          <input type="text" id="filiereInput" class="filiere-input" placeholder="Ex: Informatique, Commerce, ..." autocomplete="off">
+          <input type="text" id="filiereInput" class="filiere-input" placeholder="Ex: Informatique, Commerce, Génie civil..." autocomplete="off">
         </div>
       </div>
       <div class="filiere-overlay-footer">
@@ -49,7 +97,7 @@
 
   <!-- HEADER AVEC RETOUR -->
   <header class="header">
-    <a href="index.html" class="back-btn" id="backBtn" aria-label="Retour">
+    <a href="index.html" class="back-btn" id="backBtn" aria-label="Retour à l'accueil">
       <i class="fas fa-arrow-left"></i>
     </a>
     <span class="page-title">MON PROFIL</span>
@@ -95,7 +143,7 @@
           <span class="info-label">Téléphone</span>
           <div class="telephone-container">
             <span class="info-value" id="displayTelephone">-</span>
-            <button class="edit-btn" id="editTelephoneBtn" title="Modifier">
+            <button class="edit-btn" id="editTelephoneBtn" title="Modifier le numéro de téléphone">
               <i class="fas fa-pen"></i>
             </button>
           </div>
@@ -115,7 +163,7 @@
           <span class="info-label">Filière</span>
           <div class="filiere-container">
             <span class="info-value filiere-value" id="displayFiliere">-</span>
-            <button class="edit-btn" id="editFiliereBtn" title="Renseigner">
+            <button class="edit-btn" id="editFiliereBtn" title="Renseigner votre filière">
               <i class="fas fa-plus"></i>
             </button>
           </div>
@@ -150,5 +198,19 @@
   <!-- Script JavaScript -->
   <script src="js/theme.js"></script>
   <script src="js/profil.js"></script>
+  
+  <style>
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </body>
 </html>
