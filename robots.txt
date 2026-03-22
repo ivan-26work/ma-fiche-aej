@@ -1,0 +1,12 @@
+# Robots.txt pour Espace Stagiaire AEJ
+# https://ivan-26work.github.io/ma-fiche-aej/
+
+# Autoriser tous les robots à explorer le site
+User-agent: *
+Allow: /
+
+# Définir le délai d'exploration (respect)
+Crawl-delay: 1
+
+# Indiquer l'emplacement du sitemap
+Sitemap: https://ivan-26work.github.io/ma-fiche-aej/sitemap.xml
