@@ -423,5 +423,96 @@ body {
     padding: 1.5rem;
   }
 }
+/* ===== auth-additional.css ===== */
+/* Styles additionnels pour auth.html */
 
+/* Ajustement du padding body pour le footer */
+body {
+  padding-bottom: 85px;
+}
+
+/* Footer navigation */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 65px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 0 1rem;
+  z-index: 90;
+}
+
+.footer-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 0.7rem;
+  transition: all 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+}
+
+.footer-link i {
+  font-size: 1.2rem;
+}
+
+.footer-link:hover {
+  color: var(--primary-pink);
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Desktop version */
+@media (min-width: 768px) {
+  .footer-nav {
+    max-width: 400px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    border-radius: 40px 40px 0 0;
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Mode nuit */
+body.night-mode .footer-nav {
+  background: rgba(35, 40, 47, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.night-mode .footer-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive mobile */
+@media (max-width: 600px) {
+  body {
+    padding-bottom: 75px;
+  }
+  
+  .footer-nav {
+    height: 55px;
+    gap: 1rem;
+  }
+  
+  .footer-link {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.65rem;
+  }
+  
+  .footer-link i {
+    font-size: 1rem;
+  }
+}
 @media (max-width: 400px) 
